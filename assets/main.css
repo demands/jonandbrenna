@@ -145,8 +145,9 @@ nav a:hover {
     margin: 10px auto;
     background: url(divider.png) no-repeat center bottom;
     padding-top: 20px;
-    padding-bottom: 230px;
+    padding-bottom: 150px;
 
+    margin-bottom: 150px;
 }
 
 /* ==========================================================================
