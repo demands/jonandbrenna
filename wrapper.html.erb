@@ -8,18 +8,18 @@
     <meta name="viewport" content="width=device-width">
 
     <!--[if lt IE 9]>
-      <script src="html5shiv.js"></script>
+    <script src="<%= assets['html5shiv.js'] %>"></script>
     <![endif]-->
-    <link rel="stylesheet" href="normalize.css">
-    <link rel="stylesheet" href="main.css">
-    <script src="modernizr-2.6.2.min.js"></script>
+    <link rel="stylesheet" href="<%= assets['normalize.css'] %>">
+    <link rel="stylesheet" href="<%= assets['main.css'] %>">
+    <script src="<%= assets['modernizr-2.6.2.min.js'] %>"></script>
     <script type="text/javascript" src="http://use.typekit.net/cof3xvq.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
   </head>
 
   <body>
     <header>
-      <img src="title.png" id="title" alt="Brenna and Jonathan are getting married!">
+    <img src="<%= assets["title.png"] %>" id="title" alt="Brenna and Jonathan are getting married!">
     </header>
 
     <nav id="c" name="c">

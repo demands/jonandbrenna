@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'pry'
 require 'erb'
 
 PAGES_DIR = "pages"
@@ -9,6 +10,35 @@ WRAPPER = "wrapper.html.erb"
 
 def file_contents(fname)
   File.open(fname, 'rb') { |f| f.read }
+end
+
+$file_assets = {}
+$erb_file_assets = []
+
+Dir.foreach(ASSETS_DIR) do |fname|
+  path = File.join(ASSETS_DIR, fname)
+  next unless File.file?(path)
+
+  if /(.+)\.erb/ =~ fname
+    fname = $1
+    $erb_file_assets << fname
+  end
+
+  modified_time = File.ctime(path).strftime("%s")
+  extension = File.extname(fname)
+
+  $file_assets[fname] = "#{File.basename(fname, extension)}_#{modified_time}#{extension}"
+end
+
+$file_assets.each do |fname, generated_fname|
+  path = File.join(ASSETS_DIR, fname)
+  generated_path = File.join(GENERATED_DIR, generated_fname)
+
+  if $erb_file_assets.include? fname
+    File.open(generated_path, 'w') { |f| f.write(ERB.new(file_contents("#{path}.erb")).result(binding)) }
+  else
+    `cp #{path} #{generated_path}`
+  end
 end
 
 class Page
@@ -29,6 +59,9 @@ class Page
   def generate!
     File.open(outfile_name, 'w') {|f| f.write(outfile_contents) }
   end
+  def assets
+    $file_assets
+  end
 end
 
 Dir.foreach(PAGES_DIR) do |fname|
@@ -37,5 +70,3 @@ Dir.foreach(PAGES_DIR) do |fname|
     Page.new(fname).generate!
   end
 end
-
-`cp #{ASSETS_DIR}/* #{GENERATED_DIR}`
